@@ -68,7 +68,7 @@ if __name__ == "__main__":
         140, 630	1052, 630
         
     Use the following command to run the script.
-        python __main__.py -ip "frame000700.jpg" -ts 224,224 -sp "./here" -corA 140,182 -corB 1052,182 -corC 1052,630 -corD 140,630
+        python tile_maker.py -ip "frame000700.jpg" -ts 224,224 -sp "./here" -corA 140,182 -corB 1052,182 -corC 1052,630 -corD 140,630
 
     '''
 
@@ -86,5 +86,5 @@ if __name__ == "__main__":
     ap.add_argument("-corC", "--Cth_coordinate", required=True, help="Coordinate of point C in the input image.")
     ap.add_argument("-corD", "--Dth_coordinate", required=True, help="Coordinate of point D in the input image.")
     arguments = vars(ap.parse_args())
-    
+
     make_tiles(arguments)
