@@ -1,3 +1,4 @@
+import shutil
 from collections import defaultdict
 import Application_setup as appsetup
 import Utilities as util
@@ -25,9 +26,8 @@ class ParamVerificationSinglePicture(AppVerification):
         return self.task_params
 
     def verify_parameters(self):
-
         def check_tuple_size(input_tuple):
-            return 3 > len(input_tuple) > 0
+            return len(input_tuple) == 2
 
         if self.args:
             difference_of_actions = self.args.keys() - self.actions
@@ -41,8 +41,9 @@ class ParamVerificationSinglePicture(AppVerification):
                     if check_tuple_size(tile_size):
                         self.task_params['tile_size'] = tile_size
 
-                    if not util.check_if_dir_exists(self.args['save_path']):
-                        self.task_params['save_path'] = self.args['save_path']
+                    if util.check_if_dir_exists(self.args['save_path']):
+                        shutil.rmtree(self.args['save_path'])
+                    self.task_params['save_path'] = self.args['save_path']
 
                     remaining_actions_to_add = self.actions - self.task_params.keys()
                     for each_action in remaining_actions_to_add:
@@ -60,8 +61,14 @@ class ParamVerificationSinglePicture(AppVerification):
                 print(f"Invalid actions : {err_str}.")
 
             self.task_params['task'] = self.args['task']
-            all_param_verified = [0 if self.task_params[action] is None else 1 for action in self.actions]
-            return all(all_param_verified)
+            all_param_verified = {action: 0 if self.task_params[action] is None else 1 for action in self.actions}
+            values = all_param_verified.values()
+            passed = all(values)
+            if not passed:
+                for key, val in all_param_verified.items():
+                    if val == 0:
+                        print(f"Invalid parameter for action: {key}")
+            return passed
 
 
 class ParamVerificationMultiplePictures(AppVerification):
