@@ -23,11 +23,3 @@ class VerifyParameters:
                 print(f'Invalid Task. Possible tasks are: \n \t {task_list}')
         except KeyError as e:
             print(f' {e} Not found.')
-
-
-
-class CoOrdinate(object):
-
-    def __init__(self, name, coor: list):
-        self.name = name
-        self.abscissa, self.ordinate = coor
