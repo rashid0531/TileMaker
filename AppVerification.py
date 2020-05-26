@@ -20,7 +20,7 @@ class ParamVerificationSinglePicture(AppVerification):
     def __init__(self, args: dict):
         self.task_params = defaultdict(lambda: None)
         self.args = args
-        self.actions = appsetup.SINGLE_PICTURE_ACTIONS
+        self.arguments = appsetup.SINGLE_PICTURE_ARGUMENTS
 
     def settings(self):
         return self.task_params
@@ -30,26 +30,28 @@ class ParamVerificationSinglePicture(AppVerification):
             return len(input_tuple) == 2
 
         if self.args:
-            difference_of_actions = self.args.keys() - self.actions
-            if difference_of_actions == {'task'}:
+            difference_of_arguments = self.args.keys() - self.arguments
+            if difference_of_arguments == {'task'}:
                 try:
-                    # Check if the actions are given right parameters.
-                    if util.check_if_valid_file(self.args['image_path']):
-                        self.task_params['image_path'] = self.args['image_path']
+                    # Inputs were collected by argparse as list.
+                    image_path = self.args['image_path'][0]
+                    if util.check_if_valid_file(image_path):
+                        self.task_params['image_path'] = image_path
 
-                    tile_size = util.format_string_to_int(self.args['tile_size'])
+                    tile_size = self.args['tile_size']
                     if check_tuple_size(tile_size):
                         self.task_params['tile_size'] = tile_size
 
-                    if util.check_if_dir_exists(self.args['save_path']):
-                        shutil.rmtree(self.args['save_path'])
-                    self.task_params['save_path'] = self.args['save_path']
+                    save_path = self.args['save_path'][0]
+                    if util.check_if_dir_exists(save_path):
+                        shutil.rmtree(save_path)
+                    self.task_params['save_path'] = save_path
 
-                    remaining_actions_to_add = self.actions - self.task_params.keys()
-                    for each_action in remaining_actions_to_add:
-                        coordinates = util.format_string_to_int(self.args[each_action])
+                    remaining_args_to_add = self.arguments - self.task_params.keys()
+                    for each_arg in remaining_args_to_add:
+                        coordinates = self.args[each_arg]
                         if check_tuple_size(coordinates):
-                            self.task_params[each_action] = coordinates
+                            self.task_params[each_arg] = coordinates
 
                 except KeyError as e:
                     print(e)
@@ -57,11 +59,11 @@ class ParamVerificationSinglePicture(AppVerification):
                     print('Invalid action', e)
 
             else:
-                err_str = ', '.join(difference_of_actions[1:])
+                err_str = ', '.join(difference_of_arguments[1:])
                 print(f"Invalid actions : {err_str}.")
 
             self.task_params['task'] = self.args['task']
-            all_param_verified = {action: 0 if self.task_params[action] is None else 1 for action in self.actions}
+            all_param_verified = {arg: 0 if self.task_params[arg] is None else 1 for arg in self.arguments}
             values = all_param_verified.values()
             passed = all(values)
             if not passed:
@@ -75,7 +77,7 @@ class ParamVerificationMultiplePictures(AppVerification):
     def __init__(self, args: dict):
         self.settings = None
         self.args = args
-        self.actions = appsetup.MULTIPLE_PICTURES_ACTIONS
+        self.arguments = appsetup.MULTIPLE_PICTURES_ARGUMENTS
 
     def settings(self):
         return self.settings
