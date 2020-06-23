@@ -7,7 +7,7 @@ import abc
 
 class AppVerification(metaclass=abc.ABCMeta):
     @abc.abstractmethod
-    def verify_parameters(self, args: dict):
+    def verify_parameters(self):
         pass
 
     @property
@@ -75,12 +75,13 @@ class ParamVerificationSinglePicture(AppVerification):
 
 class ParamVerificationMultiplePictures(AppVerification):
     def __init__(self, args: dict):
-        self.settings = None
+        self.task_params = defaultdict(lambda: None)
         self.args = args
         self.arguments = appsetup.MULTIPLE_PICTURES_ARGUMENTS
 
     def settings(self):
-        return self.settings
+        return self.task_params
 
-    def verify_parameters(self, args: dict):
-        pass
+    def verify_parameters(self):
+        display_str = 'Hello World'
+        return False
