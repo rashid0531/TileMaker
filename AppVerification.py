@@ -83,5 +83,4 @@ class ParamVerificationMultiplePictures(AppVerification):
         return self.task_params
 
     def verify_parameters(self):
-        display_str = 'Hello World'
-        return False
+        pass

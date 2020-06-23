@@ -69,8 +69,7 @@ assert len(SINGLE_PICTURE_ARGUMENTS) == len(PARSER_SINGLE_PICTURE['arguments'])
 MULTIPLE_PICTURES_ARGUMENTS = ('image_dir',
                                'coordinate_file',
                                'save_path',
-                               'computation_method'
-                               )
+                               'computation_method')
 
 PARSER_MULTIPLE_PICTURES = {'name': TILE_MULTIPLE_PICTURES,
                             'description': 'Create tiles from a multiple images.',
