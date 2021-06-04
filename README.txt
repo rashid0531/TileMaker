@@ -1,4 +1,4 @@
-A multiprocessing based python CLI application used for spliting an image into tiles to make mannual annotation of flowers easier. The splited tiles are used as training data to train a CNNbased model to count canola flowers.
+A multiprocessing based python CLI application used for spliting images into small tiles to make mannual annotation of flowers easier. The splited tiles are used as training data to train a CNNbased model to count canola flowers.
 
 # Resources and references: 
    - Main documentation of argparse: https://docs.python.org/3/library/argparse.html#argparse.ArgumentParser.add_argument
